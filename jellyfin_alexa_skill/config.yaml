@@ -1,0 +1,60 @@
+name: "Jellyfin Alexa Skill"
+version: "0.1.0"
+slug: "jellyfin_alexa_skill"
+description: "Alexa skill to play media from your Jellyfin server"
+url: "https://github.com/infinityofspace/jellyfin_alexa_skill"
+arch:
+  - aarch64
+  - amd64
+  - armhf
+  - armv7
+  - i386
+init: false
+startup: application
+boot: auto
+ports:
+  1456/tcp: 1456
+ports_description:
+  1456/tcp: "Alexa skill web interface"
+options:
+  jellyfin_endpoint: ""
+  skill_endpoint: ""
+  skill_endpoint_ssl_cert_type: "trusted"
+  skill_id: ""
+  client_id: ""
+  client_secret: ""
+  refresh_token: ""
+  database:
+    user: "skill"
+    password: "jellyfin"
+    database: "jellyfin_alexa_skill"
+    host: "core-mariadb"
+    port: 3306
+  invocation_names:
+    en_US: "jellyfin player"
+schema:
+  jellyfin_endpoint: str
+  skill_endpoint: str
+  skill_endpoint_ssl_cert_type: list(trusted|wildcard|self_signed)
+  skill_id: str
+  client_id: str
+  client_secret: str
+  refresh_token: str
+  database:
+    user: str
+    password: str
+    database: str
+    host: str
+    port: int
+  invocation_names:
+    en_US: str?
+    de_DE: str?
+    ja_JP: str?
+homeassistant_api: false
+hassio_api: true
+map:
+  - ssl:rw
+host_network: false
+services:
+  - mysql:want
+webui: "http://[HOST]:[PORT:1456]"

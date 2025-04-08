@@ -1,0 +1,55 @@
+---
+configuration:
+  jellyfin_endpoint:
+    name: Jellyfin Endpoint
+    description: The public URL of your Jellyfin server (must be accessible from the internet).
+  skill_endpoint:
+    name: Skill Endpoint
+    description: The public URL for the skill (must be accessible from the internet).
+  skill_endpoint_ssl_cert_type:
+    name: SSL Certificate Type
+    description: The type of SSL certificate used for the skill endpoint.
+  skill_id:
+    name: Skill ID
+    description: Your Alexa skill ID from the Amazon Developer Console.
+  client_id:
+    name: Client ID
+    description: Client ID from your Amazon Developer security profile for SMAPI access.
+  client_secret:
+    name: Client Secret
+    description: Client secret from your Amazon Developer security profile for SMAPI access.
+  refresh_token:
+    name: Refresh Token
+    description: Refresh token from the ASK CLI (npm install ask-cli -g and run ask configure).
+  database:
+    name: Database Configuration
+    description: Configuration for the database used by the skill.
+  database.user:
+    name: Database User
+    description: Username for the database connection.
+  database.password:
+    name: Database Password
+    description: Password for the database connection.
+  database.database:
+    name: Database Name
+    description: Name of the database to use.
+  database.host:
+    name: Database Host
+    description: Hostname or IP address of the database server.
+  database.port:
+    name: Database Port
+    description: Port for the database connection.
+  invocation_names:
+    name: Invocation Names
+    description: Custom invocation names for different languages.
+  invocation_names.en_US:
+    name: English (US) Invocation Name
+    description: The name users say to trigger the skill in English (US).
+  invocation_names.de_DE:
+    name: German Invocation Name
+    description: The name users say to trigger the skill in German.
+  invocation_names.ja_JP:
+    name: Japanese Invocation Name
+    description: The name users say to trigger the skill in Japanese.
+network:
+  1456/tcp: Web interface for the Alexa skill account linking

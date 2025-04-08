@@ -1,0 +1,86 @@
+#!/usr/bin/with-contenv bashio
+set -e
+
+# Get config
+CONFIG_PATH="/data/options.json"
+DATA_PATH="/data/jellyfin-alexa-skill"
+
+# Make sure data directory exists
+mkdir -p "${DATA_PATH}"
+
+# Create skill.conf from options
+SKILL_CONF="${DATA_PATH}/skill.conf"
+
+# General settings
+JELLYFIN_ENDPOINT=$(bashio::config 'jellyfin_endpoint')
+SKILL_ENDPOINT=$(bashio::config 'skill_endpoint')
+SKILL_ENDPOINT_SSL_CERT_TYPE=$(bashio::config 'skill_endpoint_ssl_cert_type')
+SKILL_ID=$(bashio::config 'skill_id')
+CLIENT_ID=$(bashio::config 'client_id')
+CLIENT_SECRET=$(bashio::config 'client_secret') 
+REFRESH_TOKEN=$(bashio::config 'refresh_token')
+
+# Database settings
+DB_USER=$(bashio::config 'database.user')
+DB_PASSWORD=$(bashio::config 'database.password')
+DB_NAME=$(bashio::config 'database.database')
+DB_HOST=$(bashio::config 'database.host')
+DB_PORT=$(bashio::config 'database.port')
+
+# Create skill.conf file
+cat > "${SKILL_CONF}" << EOL
+[general]
+skill_id = ${SKILL_ID}
+bind_addr = 0.0.0.0
+web_app_port = 1456
+jellyfin_endpoint = ${JELLYFIN_ENDPOINT}
+skill_endpoint = ${SKILL_ENDPOINT}
+skill_endpoint_ssl_cert_type = ${SKILL_ENDPOINT_SSL_CERT_TYPE}
+force_reset_skill = false
+
+[smapi]
+client_id = ${CLIENT_ID}
+client_secret = ${CLIENT_SECRET}
+refresh_token = ${REFRESH_TOKEN}
+
+[database]
+user = ${DB_USER}
+password = ${DB_PASSWORD}
+database = ${DB_NAME}
+host = ${DB_HOST}
+port = ${DB_PORT}
+EOL
+
+# Add invocation names if configured
+if bashio::config.has_value 'invocation_names.en_US'; then
+    cat >> "${SKILL_CONF}" << EOL
+
+[en-US]
+invocation_name = $(bashio::config 'invocation_names.en_US')
+EOL
+fi
+
+if bashio::config.has_value 'invocation_names.de_DE'; then
+    cat >> "${SKILL_CONF}" << EOL
+
+[de-DE]
+invocation_name = $(bashio::config 'invocation_names.de_DE')
+EOL
+fi
+
+if bashio::config.has_value 'invocation_names.ja_JP'; then
+    cat >> "${SKILL_CONF}" << EOL
+
+[ja-JP]
+invocation_name = $(bashio::config 'invocation_names.ja_JP')
+EOL
+fi
+
+# Make sure permissions are correct
+chmod 600 "${SKILL_CONF}"
+
+# Print startup message
+bashio::log.info "Starting Jellyfin Alexa Skill..."
+
+# Start the service
+exec jellyfin-alexa-skill --config "${SKILL_CONF}" --data "${DATA_PATH}"
