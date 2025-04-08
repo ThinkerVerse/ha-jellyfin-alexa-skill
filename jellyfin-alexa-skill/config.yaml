@@ -1,5 +1,5 @@
 name: "Jellyfin Alexa Skill"
-version: "0.1.2"
+version: "0.1.3"
 slug: "jellyfin_alexa_skill"
 description: "Alexa skill to play media from your Jellyfin server"
 url: "https://github.com/infinityofspace/jellyfin_alexa_skill"
