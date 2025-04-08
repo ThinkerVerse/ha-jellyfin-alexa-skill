@@ -13,7 +13,10 @@ RUN npm install -g ask-cli
 
 # Install jellyfin-alexa-skill
 RUN pip3 install --no-cache-dir --upgrade pip && \
-    pip3 install --no-cache-dir jellyfin-alexa-skill
+    pip3 install --no-cache-dir jellyfin-alexa-skill && \
+    # Verify the location of the executable
+    find / -name "jellyfin-alexa-skill" 2>/dev/null | xargs -I{} ln -sf {} /usr/local/bin/jellyfin-alexa-skill && \
+    chmod +x /usr/local/bin/jellyfin-alexa-skill
 
 # Copy local files
 COPY rootfs /
